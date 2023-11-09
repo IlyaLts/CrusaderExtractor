@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PDS_PRS_Extractor", "PDS_PRS_Extractor.vcxproj", "{454B0A0C-BE55-4A54-8951-DFD8801A660A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{454B0A0C-BE55-4A54-8951-DFD8801A660A}.Debug|x64.ActiveCfg = Debug|x64
+		{454B0A0C-BE55-4A54-8951-DFD8801A660A}.Debug|x64.Build.0 = Debug|x64
+		{454B0A0C-BE55-4A54-8951-DFD8801A660A}.Release|x64.ActiveCfg = Release|x64
+		{454B0A0C-BE55-4A54-8951-DFD8801A660A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF11CB4A-C409-4614-9370-42E28DE91B92}
+	EndGlobalSection
+EndGlobal
