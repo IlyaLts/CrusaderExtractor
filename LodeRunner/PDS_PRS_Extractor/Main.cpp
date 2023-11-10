@@ -68,13 +68,13 @@ int main(int argc, char *argv[])
 
     prd_header_s prdHeader;
     fread(&prdHeader.unknown, sizeof(uint16), 1, prdFile);
-    fread(&prdHeader.filename, sizeof(char), 256, prdFile);
+    fread(&prdHeader.filename, sizeof(prdHeader.filename), 1, prdFile);
     fread(&prdHeader.dummyFileEntry, sizeof(uint32), 1, prdFile);
     fread(&prdHeader.unknown2, sizeof(uint16), 1, prdFile);
     fread(&prdHeader.unknown3, sizeof(uint16), 1, prdFile);
     fread(&prdHeader.unknown4, sizeof(uint16), 1, prdFile);
     fread(&prdHeader.numOfFiles, sizeof(uint16), 1, prdFile);
-    fread(&prdHeader.unknown5, sizeof(char), 44, prdFile);
+    fread(&prdHeader.unknown5, sizeof(prdHeader.unknown5), 1, prdFile);
 
     printf("File data path: %s\n", prdHeader.filename);
     printf("Number of files: %d\n", prdHeader.numOfFiles);
@@ -105,9 +105,9 @@ int main(int argc, char *argv[])
         fread(&fileInfo.unknown2, sizeof(uint16), 1, prdFile);
         fread(&fileInfo.unknown3, sizeof(uint32), 1, prdFile);
         fread(&fileInfo.fileOffset, sizeof(uint32), 1, prdFile);
-        fread(&fileInfo.fileType_Extension, sizeof(char), 4, prdFile);
+        fread(&fileInfo.fileType_Extension, sizeof(fileInfo.fileType_Extension), 1, prdFile);
         fread(&fileInfo.unknown4, sizeof(uint16), 1, prdFile);
-        fread(&fileInfo.filename, sizeof(char), 18, prdFile);
+        fread(&fileInfo.filename, sizeof(fileInfo.filename), 1, prdFile);
         fread(&fileInfo.fileSize, sizeof(uint32), 1, prdFile);
 
         printf("File ID: %d\n", fileInfo.fileID);
@@ -117,30 +117,26 @@ int main(int argc, char *argv[])
         printf("File Offset: %d\n", fileInfo.fileOffset);
         printf("\n");
 
-        fseek(prsFile, 0, SEEK_SET);
-        fseek(prsFile, fileInfo.fileOffset, SEEK_CUR);
+        fseek(prsFile, fileInfo.fileOffset, SEEK_SET);
 
-        if (argc == 3)
+        char newfln[256];
+        strcpy(newfln, folderPath);
+        if (newfln[strlen(newfln) - 1] != '/') strcat(newfln, "/");
+        strcat(newfln, fileInfo.filename);
+        strcat(newfln, ".");
+        strcat(newfln, fileInfo.fileType_Extension);
+
+        FILE *res = fopen(newfln, "wb");
+        if (!res) return -2;
+
+        for (int j = 0; j < int(fileInfo.fileSize); j++)
         {
-            char newfln[256];
-            strcpy(newfln, folderPath);
-            if (newfln[strlen(newfln) - 1] != '/') strcat(newfln, "/");
-            strcat(newfln, fileInfo.filename);
-            strcat(newfln, ".");
-            strcat(newfln, fileInfo.fileType_Extension);
-
-            FILE *res = fopen(newfln, "wb");
-            if (!res) return -2;
-
-            for (int j = 0; j < int(fileInfo.fileSize); j++)
-            {
-                char c;
-                fread(&c, sizeof(char), 1, prsFile);
-                fwrite(&c, sizeof(char), 1, res);
-            }
-
-            fclose(res);
+            char c;
+            fread(&c, sizeof(char), 1, prsFile);
+            fwrite(&c, sizeof(char), 1, res);
         }
+
+        fclose(res);
     }
 
     fclose(prsFile);
